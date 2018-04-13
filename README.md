@@ -1,4 +1,4 @@
-# aspace_ead_xform
+# aspace-ead-xform
 Transform an EAD via XSLT in various ways
 
 Using a generated EAD, apply XSLT transforms to it.
