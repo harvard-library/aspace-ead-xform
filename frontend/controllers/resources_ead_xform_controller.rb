@@ -1,9 +1,16 @@
 
+require 'net/http'
+
 require_relative '../lib/ead_transformer'
 
 class ResourcesEadXformController < ApplicationController
   set_access_control  "view_repository" => [:staff_csv]
 
+  EAD_PARAMS = {:include_unpublished => false,
+                :print_pdf => false,
+                :include_daos => true,
+                :numbered_cs => false,
+                :ead3 =>  false }
   def staff_csv
     Rails.logger.info('*** requested CSV *** ')
     # temporary hardcded ead
@@ -29,7 +36,43 @@ class ResourcesEadXformController < ApplicationController
 </ead>
 END_HERE
 
-    EadTransformer.new(temp, %w{ead2mods.xsl mods2csv.xsl})
+    request_uri = "/repositories/#{JSONModel::repository}/resource_descriptions/#{params[:id]}.xml"
+#    request_uri = "resources/#{params[:id]}/download_ead"
+   Rails.logger.info("*** request uri: #{request_uri}")
+    ead = get_ead(request_uri)
+    Rails.logger.info("*** ead: \n #{ead}")
+
+    xform = EadTransformer.new(ead, %w{ead2mods.xsl mods2csv.xsl})
+    ead = xform.transform
+    Pry::ColorPrinter.pp ead
+
+  end
+
+  private
+  def get_ead(request_uri)
+    respond_to do |format|
+      format.html {
+        self.response.headers['Last-Modified'] = Time.now.ctime.to_s
+
+        self.response_body = Enumerator.new do |y|
+          xml_response(request_uri, params) do |chunk, percent|
+            y << chunk if !chunk.blank?
+          end
+        end
+      }
+    end
+    self.response_body.to_s
+  end
+
+  def xml_response(request_uri, params = EAD_PARAMS)
+    JSONModel::HTTP::stream(request_uri, params) do |res|
+      size, total = 0, res.header['Content-Length'].to_i
+      res.read_body do |chunk|
+        size += chunk.size
+        percent = total > 0 ? ((size * 100) / total) : 0
+        yield chunk, percent
+      end
+    end
   end
 
 end
