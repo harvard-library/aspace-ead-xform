@@ -38,32 +38,28 @@ END_HERE
 
     request_uri = "/repositories/#{JSONModel::repository}/resource_descriptions/#{params[:id]}.xml"
 #    request_uri = "resources/#{params[:id]}/download_ead"
-   Rails.logger.info("*** request uri: #{request_uri}")
-    ead = get_ead(request_uri)
+    Rails.logger.info("*** request uri: #{request_uri}")
+    ead = ""
+    xml_response(request_uri, params) do |chunk, percent|
+      ead << chunk if !chunk.blank?
+    end
+
     Rails.logger.info("*** ead: \n #{ead}")
 
     xform = EadTransformer.new(ead, %w{ead2mods.xsl mods2csv.xsl})
     ead = xform.transform
     Pry::ColorPrinter.pp ead
-
+    respond_to do |format|
+      format.html {
+        headers['Last-Modified'] = Time.now.ctime.to_s
+        headers['Content-type'] = 'text/csv'
+        headers['Content-disposition'] = 'attachment; file="resource_#{params[:id]}.csv"'
+        self.response_body = ead.to_s
+      }
+    end
   end
 
   private
-  def get_ead(request_uri)
-    respond_to do |format|
-      format.html {
-        self.response.headers['Last-Modified'] = Time.now.ctime.to_s
-
-        self.response_body = Enumerator.new do |y|
-          xml_response(request_uri, params) do |chunk, percent|
-            y << chunk if !chunk.blank?
-          end
-        end
-      }
-    end
-    self.response_body.to_s
-  end
-
   def xml_response(request_uri, params = EAD_PARAMS)
     JSONModel::HTTP::stream(request_uri, params) do |res|
       size, total = 0, res.header['Content-Length'].to_i
