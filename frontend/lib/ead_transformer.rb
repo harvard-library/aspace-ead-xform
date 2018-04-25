@@ -5,7 +5,7 @@ require 'saxon-xslt'
 
 class EadTransformer
   # constructor for the transformer
-  # @param[String]ead  the EAD 
+  # @param[String]ead  the EAD
   # @param[Array[String]] xforms  an arbitrary length array of XSLT file names
   def initialize(ead, xforms)
     @stages = xforms.map{|s| fetch_xsl s }
@@ -26,10 +26,10 @@ class EadTransformer
   # stolen with permission from pobock's https://github.com/harvard-library/schematronium
   def transform()
     @stages.each do |stage|
-Pry::ColorPrinter.pp stage
+      Pry::ColorPrinter.pp stage
       @ead = stage.transform(@ead)
     end
-    @ead
+    @ead.to_s
   end
 
   private
