@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-   xpath-default-namespace="urn:isbn:1-931666-22-9"
-     xmlns="http://www.loc.gov/mods/v3"
+    xpath-default-namespace="urn:isbn:1-931666-22-9"
+    xmlns="http://www.loc.gov/mods/v3"
     xmlns:xlink="http://www.w3.org/1999/xlink"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-4.xsd"
     xmlns:xs="http://www.w3.org/2001/XMLSchema"
@@ -53,7 +53,8 @@
             <xsl:apply-templates select="did/daogrp"/>
             <xsl:element name="recordInfo">
                 <xsl:element name="recordIdentifier">
-                    <xsl:value-of select="@id"/>
+                    <!--xsl:value-of select="@id"/-->
+                    <xsl:apply-templates select="@id"/>
                 </xsl:element>
             </xsl:element>
             <relatedItem>
@@ -63,7 +64,8 @@
                     <xsl:apply-templates select="parent::c/did//unitdate"/>
                     <xsl:element name="recordInfo">
                         <xsl:element name="recordIdentifier">
-                            <xsl:value-of select="parent::c/@id"/>
+                            <xsl:apply-templates select="parent::c/@id"/>
+                            <!--xsl:value-of select="parent::c/@id"/ -->
                         </xsl:element>
                     </xsl:element>
                     <xsl:apply-templates select="parent::c" mode="withoutmods"/>
@@ -135,7 +137,11 @@
             </relatedItem>
             
     </xsl:template>
-
+    <xsl:template match="@id[starts-with(., 'aspace_') and not(string-length(substring-after(.,'_')) = 32)]">
+         <xsl:value-of select="substring-after(., 'aspace_')"/>
+        
+    </xsl:template>
+    
     <xsl:template match="unittitle">
         <xsl:element name="titleInfo">
             <xsl:element name="title">        
