@@ -1,0 +1,4 @@
+<% if controller.controller_name == 'resources' && (controller.action_name == 'edit' || controller.action_name == 'show') %>
+    <script>var ead_xform_id = <%= params[:id] %>;</script>
+    <%= javascript_include_tag "#{@base_url}/assets/ead_xform.js" %> 
+ <% end %>
