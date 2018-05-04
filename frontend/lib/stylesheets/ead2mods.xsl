@@ -151,16 +151,15 @@
     </xsl:template>
     <xsl:template match="unitdate">
         <xsl:element name="originInfo">
-            <xsl:if test='@startYear'>
+            <xsl:if test='@normal'>
                 <xsl:element name="dateCreated">
                     <xsl:attribute name="point">start</xsl:attribute>
-                    <xsl:value-of select="@startYear"/>
+                    <xsl:value-of select="substring-before(@normal,'/')"/>
                 </xsl:element>               
-            </xsl:if>
-            <xsl:if test='@endYear'>
+
                 <xsl:element name="dateCreated">
                     <xsl:attribute name="point">end</xsl:attribute>
-                    <xsl:value-of select="@endYear"/>
+                    <xsl:value-of select="substring-after(@normal,'/')"/>
                 </xsl:element>               
             </xsl:if>
             <xsl:element name="dateCreated">
