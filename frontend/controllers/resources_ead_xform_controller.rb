@@ -25,10 +25,10 @@ class ResourcesEadXformController < ApplicationController
     ead = xform.transform
  #   Pry::ColorPrinter.pp ead
     respond_to do |format|
-      format.html {
+      format.csv {
         headers['Last-Modified'] = Time.now.ctime.to_s
         headers['Content-Disposition'] = "attachment; filename=\"resource_#{params[:id]}.csv\""
-        headers['Content-Type'] ||= 'text/csv'
+        headers['Content-Type'] = 'text/csv'
         self.response_body = ead.to_s
       }
     end
