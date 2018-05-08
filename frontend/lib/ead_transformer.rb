@@ -26,7 +26,7 @@ class EadTransformer
   # stolen with permission from pobock's https://github.com/harvard-library/schematronium
   def transform()
     @stages.each do |stage|
-      Pry::ColorPrinter.pp stage
+#      Pry::ColorPrinter.pp stage
       @ead = stage.transform(@ead)
     end
     @ead.to_s
