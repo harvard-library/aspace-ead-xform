@@ -21,7 +21,7 @@ class ResourcesEadXformController < ApplicationController
 
 #    Rails.logger.debug("*** ead: \n #{ead}")
 
-    xform = EadTransformer.new(ead, %w{ead2mods.xsl mods2csv.xsl})
+    xform = EadTransformer.new(ead.force_encoding("UTF-8") , %w{ead2mods.xsl mods2csv.xsl})
     ead = xform.transform
  #   Pry::ColorPrinter.pp ead
     respond_to do |format|
