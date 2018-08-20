@@ -35,7 +35,7 @@
             <xsl:apply-templates select="//c" mode="withmods"/>
         </modsCollection>
     </xsl:template>
-
+    
     <xsl:template match="c" mode="withmods">
         <mods>
             <xsl:apply-templates select="did/unittitle"/>
@@ -108,37 +108,37 @@
                 </xsl:element>
             </xsl:element>
             -->
-            <relatedItem>
-                <xsl:attribute name="type">host</xsl:attribute>
-                <xsl:if test="parent::c">
-                    <xsl:apply-templates select="parent::c/did/unittitle"/>
-                    <xsl:apply-templates select="parent::c/did//unitdate"/>
-                    <xsl:element name="recordInfo">
-                        <xsl:element name="recordIdentifier">
-                            <xsl:value-of select="parent::c/@id"/>
-                        </xsl:element>
+        <relatedItem>
+            <xsl:attribute name="type">host</xsl:attribute>
+            <xsl:if test="parent::c">
+                <xsl:apply-templates select="parent::c/did/unittitle"/>
+                <xsl:apply-templates select="parent::c/did//unitdate"/>
+                <xsl:element name="recordInfo">
+                    <xsl:element name="recordIdentifier">
+                        <xsl:value-of select="parent::c/@id"/>
                     </xsl:element>
-                    <xsl:apply-templates select="parent::c" mode="withoutmods"/>
-                </xsl:if>
-                
-                <xsl:if test="not(parent::c)">
-                	<xsl:attribute name="displayLabel">collection</xsl:attribute>
-                       <xsl:apply-templates select="/ead/archdesc/did//repository"/>
-                        <xsl:apply-templates select="/ead/archdesc/did//unitid"/>
-                        <xsl:apply-templates select="/ead/archdesc/did/origination"/>
-                        <xsl:apply-templates select="/ead/archdesc/did/unittitle"/>
-                        <xsl:apply-templates select="/ead/archdesc/did//unitdate"/>
-                        <xsl:element name="recordInfo">
-                            <xsl:element name="recordIdentifier">
-                                <xsl:value-of select="/ead/eadheader/eadid"/>
-                            </xsl:element>
-                        </xsl:element>
-                </xsl:if>
-            </relatedItem>
+                </xsl:element>
+                <xsl:apply-templates select="parent::c" mode="withoutmods"/>
+            </xsl:if>
             
+            <xsl:if test="not(parent::c)">
+                <xsl:attribute name="displayLabel">collection</xsl:attribute>
+                <xsl:apply-templates select="/ead/archdesc/did//repository"/>
+                <xsl:apply-templates select="/ead/archdesc/did//unitid"/>
+                <xsl:apply-templates select="/ead/archdesc/did/origination"/>
+                <xsl:apply-templates select="/ead/archdesc/did/unittitle"/>
+                <xsl:apply-templates select="/ead/archdesc/did//unitdate"/>
+                <xsl:element name="recordInfo">
+                    <xsl:element name="recordIdentifier">
+                        <xsl:value-of select="/ead/eadheader/eadid"/>
+                    </xsl:element>
+                </xsl:element>
+            </xsl:if>
+        </relatedItem>
+        
     </xsl:template>
     <xsl:template match="@id[starts-with(., 'aspace_') and not(string-length(substring-after(.,'_')) = 32)]">
-         <xsl:value-of select="substring-after(., 'aspace_')"/>
+        <xsl:value-of select="substring-after(., 'aspace_')"/>
         
     </xsl:template>
     
@@ -156,7 +156,7 @@
                     <xsl:attribute name="point">start</xsl:attribute>
                     <xsl:value-of select="substring-before(@normal,'/')"/>
                 </xsl:element>               
-
+                
                 <xsl:element name="dateCreated">
                     <xsl:attribute name="point">end</xsl:attribute>
                     <xsl:value-of select="substring-after(@normal,'/')"/>
@@ -174,7 +174,7 @@
             </xsl:element>
         </xsl:element>
     </xsl:template>       
-
+    
     <xsl:template match="origination">
         <xsl:element name="name">
             <xsl:element name="namePart">
@@ -182,7 +182,7 @@
             </xsl:element>
         </xsl:element>
     </xsl:template> 
-
+    
     <xsl:template match="physdesc">
         <xsl:element name="physicalDescription">
             <xsl:element name="extent">
@@ -198,7 +198,7 @@
             </xsl:element>
         </xsl:element>
     </xsl:template> 
- 
+    
     <xsl:template match="@level">
         <xsl:element name="physicalDescription">
             <xsl:element name="note">
@@ -207,30 +207,30 @@
             </xsl:element>
         </xsl:element>
     </xsl:template>
- 
+    
     <xsl:template match="unitid">
         <xsl:element name="identifier">
             <xsl:value-of select="."/>
         </xsl:element>
     </xsl:template> 
-
+    
     <xsl:template match="container">
         <xsl:element name="physicalLocation">
             <xsl:attribute name="type"><xsl:text>container</xsl:text></xsl:attribute>
             <xsl:value-of select="."/>
         </xsl:element>
     </xsl:template> 
-
+    
     <xsl:template match="physloc">
         <xsl:element name="physicalLocation">
             <xsl:attribute name="type"><xsl:text>location</xsl:text></xsl:attribute>
             <xsl:value-of select="normalize-space(replace(.,'\n',' '))"/>
         </xsl:element>
     </xsl:template>
-
+    
     <xsl:template match="repository">
         <xsl:element name="location">
-	    <xsl:element name="physicalLocation">	
+            <xsl:element name="physicalLocation">	
                 <xsl:attribute name="type"><xsl:text>repository</xsl:text></xsl:attribute>
                 <xsl:value-of select="normalize-space(.)"/>
                 <!--<xsl:if test="./*">
@@ -239,17 +239,17 @@
             </xsl:element>
         </xsl:element>
     </xsl:template> 
-
+    
     <xsl:template match="accessrestrict">
         <xsl:element name="accessCondition">
             <xsl:value-of select="replace(.,'\n',' ')"/>
         </xsl:element>
     </xsl:template> 
- 
+    
     <xsl:template match="dao">
         <xsl:element name="location">
             <xsl:element name="url">
-                <xsl:value-of select="@href"/>
+                <xsl:value-of select="@xlink:href"/>
             </xsl:element>
         </xsl:element>
     </xsl:template>
@@ -269,13 +269,13 @@
     <xsl:template match="daoloc[@xlink:label=../arc/@xlink:to[../@xlink:show='embed']]">
         <xsl:element name="url">
             <xsl:attribute name="displayLabel">Thumbnail</xsl:attribute>
-            <xsl:value-of select="@href"/>
+            <xsl:value-of select="@xlink:href"/>
         </xsl:element>
     </xsl:template>
     <xsl:template match="daoloc[@xlink:label=../arc/@xlink:to[../@xlink:show='new']]">
         <xsl:element name="url">
             <xsl:attribute name="displayLabel">Full Image</xsl:attribute>
-            <xsl:value-of select="@href"/>
+            <xsl:value-of select="@xlink:href"/>
         </xsl:element>
     </xsl:template> 
     <!--
