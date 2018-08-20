@@ -28,6 +28,7 @@ class EadTransformer
     @stages.each do |stage|
 #      Pry::ColorPrinter.pp stage
       @ead = stage.transform(@ead)
+Rails.logger.debug("#{@ead.to_s.pretty_inspect}")
     end
     @ead.to_s
   end
@@ -38,6 +39,7 @@ class EadTransformer
   # @param [String] fname The filename of a stage
   # @return [Saxon::XSLT::Stylesheet]
   def fetch_xsl(fname)
+Rails.logger.debug("FILE: #{File.join(File.dirname(File.expand_path(__FILE__)),'stylesheets', fname)}")
     Saxon.XSLT(File.open(File.join(File.dirname(File.expand_path(__FILE__)),'stylesheets', fname)))
   end
 
