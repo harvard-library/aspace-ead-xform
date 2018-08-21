@@ -12,14 +12,15 @@ class ResourcesEadXformController < ApplicationController
                 :numbered_cs => false,
                 :ead3 =>  false }
   def staff_csv
+    newparams = params.merge(EAD_PARAMS)
     request_uri = "/repositories/#{JSONModel::repository}/resource_descriptions/#{params[:id]}.xml"
-    Rails.logger.debug("*** request uri: #{request_uri}")
+#    Rails.logger.debug("*** request uri: #{request_uri}")
     ead = ""
-    xml_response(request_uri, params) do |chunk, percent|
+    xml_response(request_uri, newparams) do |chunk, percent|
       ead << chunk if !chunk.blank?
     end
 
-#    Rails.logger.debug("*** ead: \n #{ead}")
+ #   Rails.logger.debug("*** ead: \n #{ead.to_s}")
 
     xform = EadTransformer.new(ead.force_encoding("UTF-8") , %w{ead2mods.xsl mods2csv.xsl})
     ead = xform.transform
