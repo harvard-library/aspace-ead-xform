@@ -20,7 +20,7 @@ class EadTransformer
                  else
                    raise "Unable to generate Ead document from #{ead.class.to_s}"
                  end
-    Rails.logger.info("*** have #{@stages.length} stages! ***")
+#    Rails.logger.info("*** have #{@stages.length} stages! ***")
   end
 
   # stolen with permission from pobock's https://github.com/harvard-library/schematronium
@@ -28,7 +28,7 @@ class EadTransformer
     @stages.each do |stage|
 #      Pry::ColorPrinter.pp stage
       @ead = stage.transform(@ead)
-Rails.logger.debug("#{@ead.to_s.pretty_inspect}")
+#Rails.logger.debug("#{@ead.to_s.pretty_inspect}")
     end
     @ead.to_s
   end
@@ -39,7 +39,7 @@ Rails.logger.debug("#{@ead.to_s.pretty_inspect}")
   # @param [String] fname The filename of a stage
   # @return [Saxon::XSLT::Stylesheet]
   def fetch_xsl(fname)
-Rails.logger.debug("FILE: #{File.join(File.dirname(File.expand_path(__FILE__)),'stylesheets', fname)}")
+#Rails.logger.debug("FILE: #{File.join(File.dirname(File.expand_path(__FILE__)),'stylesheets', fname)}")
     Saxon.XSLT(File.open(File.join(File.dirname(File.expand_path(__FILE__)),'stylesheets', fname)))
   end
 
