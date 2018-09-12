@@ -6,7 +6,7 @@ require_relative '../lib/ead_transformer'
 class ResourcesEadXformController < ApplicationController
   set_access_control  "view_repository" => [:staff_csv]
 
-  EAD_PARAMS = {:include_unpublished => false,
+  EAD_PARAMS = {:include_unpublished => true,
                 :print_pdf => false,
                 :include_daos => true,
                 :numbered_cs => false,
@@ -24,7 +24,7 @@ class ResourcesEadXformController < ApplicationController
 
     xform = EadTransformer.new(ead.force_encoding("UTF-8") , %w{ead2mods.xsl mods2csv.xsl})
     ead = xform.transform
- #   Pry::ColorPrinter.pp ead
+ #   Rails.logger.debug("*** csv: \n #{ead.to_s}")
     respond_to do |format|
       format.csv {
         headers['Last-Modified'] = Time.now.ctime.to_s
