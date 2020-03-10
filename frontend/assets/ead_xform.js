@@ -4,7 +4,9 @@
 
 let $eadBtn = $("#download-ead-dropdown")
 
-if ($eadBtn) {
-	a = '/resources/' +  ead_xform_id + '/staff_csv';
-	$eadBtn.after('<li class="hvd-download-csv" id="hvd-download-csv"><a href="' + a + '">Download CSV</a></li>');
+if ($("#hvd-download-csv").length === 0) {
+	if ($eadBtn) {
+		a = '/resources/' +  ead_xform_id + '/staff_csv';
+		$eadBtn.after('<li class="hvd-download-csv" id="hvd-download-csv"><a href="' + a + '">Download CSV</a></li>');
+	}
 }
