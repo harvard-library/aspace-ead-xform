@@ -1,6 +1,6 @@
 // This is embedded directly in resources/toolbar.html.erb because ArchivesSpace core,
 // after visiting a resource page via link (but not on refresh), loads that component
-// twice, overwriting out any additions to the menu
+// twice, overwriting any additions to the menu
 
 let $eadBtn = $("#download-ead-dropdown")
 
