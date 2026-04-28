@@ -1,4 +1,6 @@
 # aspace-ead-xform
+
+## THIS HAS BEEN ARCHIVED AND CURRENT VERSION IS AT: github.com/harvard-lts/aspace-ead-xform
 Transform an EAD via XSLT in various ways
 
 Using a generated EAD, apply XSLT transforms to it.
